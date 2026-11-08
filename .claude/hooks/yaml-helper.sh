@@ -63,7 +63,7 @@
 #     autonomous mode to record decisions that would otherwise have
 #     been AskUserQuestion prompts.
 #
-# Python fallback chain: python -> python3 -> py
+# Python fallback chain: $CCGS_PYTHON -> python -> python3 -> py -> uv python find
 # Parses a YAML subset: nested maps + scalar leaves + arrays + comments
 # + quoted strings. PyYAML is NOT required.
 #
@@ -79,7 +79,17 @@
 _yaml_helper_python=""
 _yaml_helper_resolve_python() {
   if [ -n "$_yaml_helper_python" ]; then return 0; fi
-  for candidate in python python3 py; do
+  local uv_python="" candidate
+  # Last resort: uv-managed interpreter. uv prints a native Windows path;
+  # convert it so bash can execute it.
+  if command -v uv >/dev/null 2>&1; then
+    uv_python=$(uv python find 2>/dev/null)
+    if [ -n "$uv_python" ] && command -v cygpath >/dev/null 2>&1; then
+      uv_python=$(cygpath -u "$uv_python")
+    fi
+  fi
+  for candidate in "${CCGS_PYTHON:-}" python python3 py "$uv_python"; do
+    if [ -z "$candidate" ]; then continue; fi
     if command -v "$candidate" >/dev/null 2>&1; then
       # Require Python 3 — the parser uses py3-only open(encoding=) kwargs.
       if "$candidate" -c "import sys; sys.exit(0 if sys.version_info[0] >= 3 else 1)" >/dev/null 2>&1; then
@@ -97,7 +107,7 @@ get_yaml_key() {
   if [ -z "$file" ] || [ -z "$path" ]; then return 0; fi
   if [ ! -f "$file" ]; then return 0; fi
   if ! _yaml_helper_resolve_python; then
-    echo "yaml-helper: no python interpreter found (tried python, python3, py)" >&2
+    echo "yaml-helper: no python interpreter found (tried \$CCGS_PYTHON, python, python3, py, uv python find)" >&2
     return 0
   fi
   "$_yaml_helper_python" - "$file" "$path" <<'PYEOF'
@@ -224,7 +234,7 @@ get_yaml_array() {
   if [ -z "$file" ] || [ -z "$path" ]; then return 0; fi
   if [ ! -f "$file" ]; then return 0; fi
   if ! _yaml_helper_resolve_python; then
-    echo "yaml-helper: no python interpreter found (tried python, python3, py)" >&2
+    echo "yaml-helper: no python interpreter found (tried \$CCGS_PYTHON, python, python3, py, uv python find)" >&2
     return 0
   fi
   "$_yaml_helper_python" - "$file" "$path" <<'PYEOF'
@@ -817,7 +827,7 @@ validate_yaml_enum() {
   local file="$1"
   if [ -z "$file" ] || [ ! -f "$file" ]; then return 0; fi
   if ! _yaml_helper_resolve_python; then
-    echo "yaml-helper: no python interpreter found (tried python, python3, py)" >&2
+    echo "yaml-helper: no python interpreter found (tried \$CCGS_PYTHON, python, python3, py, uv python find)" >&2
     return 0
   fi
   # ONE interpreter spawn for the whole enum table.
