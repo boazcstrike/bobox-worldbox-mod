@@ -1,0 +1,30 @@
+decompiled/
+bin/
+obj/
+*.user
+
+# IDE and editor
+.vs/
+.idea/
+*.suo
+
+# Test output
+TestResults/
+
+# Build artifacts
+*.dll
+*.pdb
+*.nupkg
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets and local environments
+.env
+.env.*
+.venv/
+__pycache__/

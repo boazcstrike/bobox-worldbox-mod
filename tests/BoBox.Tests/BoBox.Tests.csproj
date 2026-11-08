@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- Same C# version as the mod (Unity Mono), so a planner feature that does not build in the mod fails here too. -->
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- Only the pure layers are linked in: Planner and Rules have no game or Unity types, so they run outside WorldBox. -->
+  <ItemGroup>
+    <Compile Include="..\..\src\BoBox\Planner\**\*.cs" Link="Planner\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\src\BoBox\Rules\**\*.cs" Link="Rules\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <!-- Same major as the game's worldbox_Data/Managed/Newtonsoft.Json.dll (13.0.2); 13.0.3 because the test SDK requires it. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

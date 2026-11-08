@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "signals": {
+    "cities_per_frame": 2,
+    "refresh_seconds": 8.0,
+    "coast_cache_seconds": 30.0,
+    "coast_min_water_tiles": 2500,
+    "free_zone_scan_radius": 9
+  },
+  "scenarios": {
+    "forest_rich": {
+      "min_trees_per_zone": 2.0
+    },
+    "fertile_plains": {
+      "min_farmable_share": 0.6,
+      "max_rock_share": 0.1
+    },
+    "rocky": {
+      "min_rock_share": 0.25,
+      "min_minerals_per_zone": 1.0
+    },
+    "scarce": {
+      "max_trees_per_zone": 0.5,
+      "max_minerals_per_zone": 0.25,
+      "max_farmable_share": 0.2,
+      "min_harsh_share": 0.4
+    },
+    "coastal": {
+      "max_island_tiles": 2500,
+      "min_island_owned_share": 0.5,
+      "min_ocean_share": 0.1
+    },
+    "crowded_frontier": {
+      "min_foreign_ring_share": 0.3,
+      "max_foreign_city_distance_zones": 6,
+      "min_hostile_neighbours": 1
+    },
+    "open_frontier": {
+      "min_unclaimed_ring_share": 0.5,
+      "min_free_zones_in_range": 10
+    }
+  },
+  "pathways": [
+    {
+      "id": "scarce",
+      "when": {
+        "required": [],
+        "any": [
+          "scarce"
+        ]
+      },
+      "job_weights": {
+        "gatherer_bushes": 1.3,
+        "hunter": 1.5,
+        "woodcutter": 0.8,
+        "miner": 0.8
+      },
+      "building_priority": {
+        "type_stockpile": 10,
+        "type_windmill": 8,
+        "type_house": 5
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "crowded",
+      "when": {
+        "required": [],
+        "any": [
+          "crowded_frontier"
+        ]
+      },
+      "job_weights": {
+        "builder": 1.2,
+        "miner": 1.2
+      },
+      "building_priority": {
+        "type_barracks": 10,
+        "type_watch_tower": 9,
+        "type_house": 5
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "coastal",
+      "when": {
+        "required": [],
+        "any": [
+          "coastal"
+        ]
+      },
+      "job_weights": {
+        "hunter": 1.2,
+        "farmer": 1.1
+      },
+      "building_priority": {
+        "type_docks": 10,
+        "type_stockpile": 8,
+        "type_house": 5
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "rocky",
+      "when": {
+        "required": [],
+        "any": [
+          "rocky"
+        ]
+      },
+      "job_weights": {
+        "miner": 1.5,
+        "miner_deposit": 1.5,
+        "farmer": 0.9
+      },
+      "building_priority": {
+        "type_mine": 10,
+        "type_stockpile": 8,
+        "type_house": 5
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "forest",
+      "when": {
+        "required": [],
+        "any": [
+          "forest_rich"
+        ]
+      },
+      "job_weights": {
+        "woodcutter": 1.5,
+        "builder": 1.2
+      },
+      "building_priority": {
+        "type_stockpile": 10,
+        "type_house": 8,
+        "type_hall": 6
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "fertile",
+      "when": {
+        "required": [],
+        "any": [
+          "fertile_plains"
+        ]
+      },
+      "job_weights": {
+        "farmer": 1.5,
+        "gatherer_bushes": 0.8
+      },
+      "building_priority": {
+        "type_windmill": 10,
+        "type_house": 8,
+        "type_market": 4
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "open_frontier",
+      "when": {
+        "required": [],
+        "any": [
+          "open_frontier"
+        ]
+      },
+      "job_weights": {
+        "builder": 1.5,
+        "woodcutter": 1.2
+      },
+      "building_priority": {
+        "type_house": 10,
+        "type_stockpile": 8,
+        "type_hall": 6
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    },
+    {
+      "id": "default",
+      "when": {
+        "required": [],
+        "any": []
+      },
+      "job_weights": {},
+      "building_priority": {
+        "type_stockpile": 8,
+        "type_house": 6,
+        "type_windmill": 5
+      },
+      "capacity_multipliers": {
+        "jobs": {},
+        "buildings": {}
+      }
+    }
+  ],
+  "capacity": {
+    "jobs": {
+      "builder": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.5,
+        "min_floor": 0,
+        "max_ceiling": 8,
+        "max_per_pop": 0.0
+      },
+      "farmer": {
+        "min_per_pop": 0.05,
+        "max_per_zone": 2.0,
+        "min_floor": 0,
+        "max_ceiling": 60,
+        "max_per_pop": 0.4
+      },
+      "gatherer_bushes": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 1.0,
+        "min_floor": 0,
+        "max_ceiling": 20,
+        "max_per_pop": 0.1
+      },
+      "gatherer_herbs": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.5,
+        "min_floor": 0,
+        "max_ceiling": 10,
+        "max_per_pop": 0.05
+      },
+      "gatherer_honey": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.25,
+        "min_floor": 0,
+        "max_ceiling": 5,
+        "max_per_pop": 0.02
+      },
+      "hunter": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.1,
+        "min_floor": 0,
+        "max_ceiling": 3,
+        "max_per_pop": 0.0
+      },
+      "woodcutter": {
+        "min_per_pop": 0.05,
+        "max_per_zone": 1.0,
+        "min_floor": 0,
+        "max_ceiling": 30,
+        "max_per_pop": 0.3
+      },
+      "miner": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.5,
+        "min_floor": 0,
+        "max_ceiling": 15,
+        "max_per_pop": 0.0
+      },
+      "miner_deposit": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.5,
+        "min_floor": 0,
+        "max_ceiling": 15,
+        "max_per_pop": 0.05
+      }
+    },
+    "buildings": {
+      "type_house": {
+        "min_per_pop": 0.1,
+        "max_per_zone": 1.0,
+        "min_floor": 1,
+        "max_ceiling": 200,
+        "max_per_pop": 0.0
+      },
+      "type_stockpile": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.1,
+        "min_floor": 1,
+        "max_ceiling": 4,
+        "max_per_pop": 0.0
+      },
+      "type_windmill": {
+        "min_per_pop": 0.02,
+        "max_per_zone": 0.1,
+        "min_floor": 0,
+        "max_ceiling": 4,
+        "max_per_pop": 0.0
+      },
+      "type_mine": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 3,
+        "max_per_pop": 0.0
+      },
+      "type_docks": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      },
+      "type_well": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.1,
+        "min_floor": 0,
+        "max_ceiling": 4,
+        "max_per_pop": 0.0
+      },
+      "type_bonfire": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 1.0,
+        "min_floor": 1,
+        "max_ceiling": 1,
+        "max_per_pop": 0.0
+      },
+      "type_hall": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 1.0,
+        "min_floor": 0,
+        "max_ceiling": 1,
+        "max_per_pop": 0.0
+      },
+      "type_temple": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      },
+      "type_library": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      },
+      "type_market": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      },
+      "type_barracks": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      },
+      "type_watch_tower": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.1,
+        "min_floor": 0,
+        "max_ceiling": 8,
+        "max_per_pop": 0.0
+      },
+      "type_statue": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 3,
+        "max_per_pop": 0.0
+      },
+      "type_training_dummies": {
+        "min_per_pop": 0.0,
+        "max_per_zone": 0.05,
+        "min_floor": 0,
+        "max_ceiling": 2,
+        "max_per_pop": 0.0
+      }
+    }
+  },
+  "map_scale": [
+    {
+      "min_size": 0,
+      "factor": 1.0
+    },
+    {
+      "min_size": 9,
+      "factor": 1.25
+    },
+    {
+      "min_size": 12,
+      "factor": 1.5
+    },
+    {
+      "min_size": 15,
+      "factor": 1.75
+    }
+  ]
+}
